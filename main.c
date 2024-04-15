@@ -11,6 +11,7 @@ int main (void)
 	bool interactive_mode = is_interactive_mode();
 	printf("You're now in my shell...\n");
 
+	/* Check is rnning interactively if it is then...*/
 	if (interactive_mode)
 	{
 		printf("Shell is running interactively\n");
@@ -19,12 +20,14 @@ int main (void)
 	{
 		printf("Shell is running non-interactively\n");
 	}
-
+	/* Main shell loop..*/
 	while (1)
 	{
+		/* This part displays prompt if running interactively */
 		if (interactive_mode)
 		{
 			display_prompt();
+			/* Reads the user input */
 			if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
 			{
 				printf("\n");
@@ -32,6 +35,7 @@ int main (void)
 			}
 			remove_newline(command);
 		} else {
+			/* Read input if not running interactively */
 			if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
 			{
 				break;
@@ -42,10 +46,12 @@ int main (void)
 		{
 			continue;
 		}
+		/* Checks for exit command */
 		if (strcmp(command, "exit") == 0)
 		{
 			break;
 		}
+		/* Execute commands */
 		execute_command(command);
 	}
 	printf("You just exited the shell...\n");
