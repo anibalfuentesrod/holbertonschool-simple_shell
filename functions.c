@@ -4,14 +4,14 @@
  *
  * Return: true if running is interactive mode, false if not
 **/
-bool is_interactive_mode()
+bool is_interactive_mode(void)
 {
-	return isatty(STDIN_FILENO);
+	return (isatty(STDIN_FILENO));
 }
 /**
  * display_prompt - this just simply display the prompt
 **/
-void display_prompt()
+void display_prompt(void)
 {
 	if (is_interactive_mode())
 	{
@@ -45,9 +45,10 @@ void execute_command(char *command)
 	else if (pid == 0)
 	{
 		char *args[MAX_COMMAND_LENGTH];
+
 		args[0] = strtok(command, " ");
 		i = 1;
-		
+
 		/* Tokenize command */
 		while ((args[i] = strtok(NULL, " ")) != NULL)
 		{
@@ -58,9 +59,11 @@ void execute_command(char *command)
 		/* Handle command not found */
 		fprintf(stderr, "./hsh: %s: command not found\n", command);
 		exit(EXIT_FAILURE);
-	} else {
+	} else
+	{
 	/* Wait for child procces to finish */
 	int status;
+
 	waitpid(pid, &status, 0);
 	}
 }

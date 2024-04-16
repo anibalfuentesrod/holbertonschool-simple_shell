@@ -1,14 +1,13 @@
 #include "shell.h"
 /**
  * main - the main duhh
- * @args: argument
- * @argv: argument vector
  * Return: 0
 **/
-int main (void)
+int main(void)
 {
 	char command[MAX_COMMAND_LENGTH];
 	bool interactive_mode = is_interactive_mode();
+
 	printf("You're now in my shell...\n");
 
 	/* Check is rnning interactively if it is then...*/
@@ -30,11 +29,11 @@ int main (void)
 			/* Reads the user input */
 			if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
 			{
-				printf("\n");
 				break;
 			}
 			remove_newline(command);
-		} else {
+		} else
+		{
 			/* Read input if not running interactively */
 			if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
 			{
