@@ -1,5 +1,5 @@
 # My Project
-!(https://holbertonschoolpr.com/images/logo_blanco.webp)
+![Project Logo](https://holbertonschoolpr.com/images/logo_blanco.webp)
 
 ## Description
 
