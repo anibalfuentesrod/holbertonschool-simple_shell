@@ -1,4 +1,5 @@
-# My Project
+# My Simple Shell
+
 ![Project Logo](https://holbertonschoolpr.com/images/logo_blanco.webp)
 
 ## Description
