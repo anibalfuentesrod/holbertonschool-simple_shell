@@ -55,8 +55,9 @@ void execute_command(char *command)
 			i++;
 		}
 		execvp(args[0], args);
-
-		fprintf(stderr, "./hsh: %s: command not found/n", command);
+		
+		fprintf(stderr, "./hsh: %s: ", args[0]);
+		perror("");
 		exit(EXIT_FAILURE);
 	}
 	else
