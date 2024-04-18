@@ -2,15 +2,16 @@
 /**
  * initialize_shell - initializes the shell and displays a my welcome message
 */
+
 void initialize_shell(void)
 {
-	printf("You're now in my shell, welcome!!!\n");
 
 	if (is_interactive_mode())
 	{
 		printf("Shell is running interactively\n");
 	}
 }
+
 /**
  * read_command - reads a command from the user input.
  * @command: pointer to the buffer where the command will be stored.
