@@ -22,7 +22,12 @@ void display_prompt(void)
 **/
 void remove_newline(char *str)
 {
-	str[strcspn(str, "\n")] = '\0';
+	char *newline = strchr(str, '\n');
+	
+	if (newline != NULL)
+	{
+		*newline = '\0';
+	}
 }
 /**
  * execute_command - this executes the command that you put on it

@@ -18,13 +18,20 @@ void initialize_shell(void)
 **/
 void read_command(char *command)
 {
-	if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
+	ssize_t bytes_read = read(STDIN_FILENO, command, MAX_COMMAND_LENGTH);
+	
+	if (bytes_read == -1)
 	{
-		if (isatty(STDIN_FILENO))
-			printf("\n");
+		perror("read");
+		exit(EXIT_FAILURE);
+	}
+	else if (bytes_read == 0)
+	{
+		if (is_interactive_mode())
+		printf("\n");
 		exit(EXIT_SUCCESS);
 	}
-	remove_newline(command);
+	command[bytes_read - 1] = '\0';
 }
 /**
  * proccess_command - processes the command entered by the user.
