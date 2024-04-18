@@ -28,7 +28,9 @@ void read_command(char *command)
 	else if (bytes_read == 0)
 	{
 		if (is_interactive_mode())
+		{
 		printf("\n");
+		}
 		exit(EXIT_SUCCESS);
 	}
 	command[bytes_read - 1] = '\0';
@@ -43,6 +45,7 @@ void proccess_command(char *command)
 	{
 		return;
 	}
+
 	if (strcmp(command, "exit") == 0)
 	{
 		exit(EXIT_SUCCESS);

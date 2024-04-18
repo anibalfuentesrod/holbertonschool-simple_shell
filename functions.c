@@ -47,7 +47,7 @@ void execute_command(char *command)
 	{
 		char *args[MAX_COMMAND_LENGTH];
 
-		args[0] = strtok(command, "");
+		args[0] = strtok(command, " ");
 		if (args[0] == NULL)
 			exit(EXIT_SUCCESS);
 
