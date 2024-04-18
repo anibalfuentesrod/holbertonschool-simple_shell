@@ -37,10 +37,6 @@ void proccess_command(char *command)
 	}
 	if (strcmp(command, "exit") == 0)
 	{
-		if (is_interactive_mode())
-		{
-			printf("You just exit my shell\n");
-		}
 		exit(EXIT_SUCCESS);
 	}
 	execute_command(command);
