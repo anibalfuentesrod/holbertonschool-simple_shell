@@ -50,11 +50,12 @@ void proccess_command(char *command)
  *
  * Return: 0 on success.
 **/
-int main(void)
+int main(int argc, char *argv[])
 {
 	char command[MAX_COMMAND_LENGTH];
 
-	initialize_shell();
+	(void)argc;
+	(void)argv;
 
 	while (1)
 	{
