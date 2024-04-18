@@ -13,12 +13,8 @@ bool is_interactive_mode(void)
 **/
 void display_prompt(void)
 {
-	if (is_interactive_mode())
-	{
-		/* Check if running interactively */
-		printf("($) ");
-		fflush(stdout);
-	}
+	if (isatty(STDIN_FILENO))
+		printf("$ ");
 }
 /**
  * remove_newline - this obv remove the newline character from a string
@@ -36,7 +32,6 @@ void execute_command(char *command)
 {
 	pid_t pid = fork();
 	int status;
-	int i;
 
 	if (pid == -1)
 	{
@@ -48,15 +43,11 @@ void execute_command(char *command)
 		char *args[MAX_COMMAND_LENGTH];
 
 		args[0] = strtok(command, " ");
-		i = 1;
+		if (args[0] == NULL)
+			exit(EXIT_SUCCESS);
 
-		while ((args[i] = strtok(NULL, " ")) != NULL)
-		{
-			i++;
-		}
 		execvp(args[0], args);
-		
-		fprintf(stderr, "./hsh: %s: \n", args[0]);
+		perror(args[0]);
 		exit(EXIT_FAILURE);
 	}
 	else

@@ -20,7 +20,8 @@ void read_command(char *command)
 {
 	if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
 	{
-		printf("\n");
+		if (isatty(STDIN_FILENO))
+			printf("\n");
 		exit(EXIT_SUCCESS);
 	}
 	remove_newline(command);
