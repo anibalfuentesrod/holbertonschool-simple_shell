@@ -9,9 +9,6 @@ void initialize_shell(void)
 	if (is_interactive_mode())
 	{
 		printf("Shell is running interactively\n");
-	} else
-	{
-		printf("Shell is running non-interactively\n");
 	}
 }
 /**
@@ -39,7 +36,7 @@ void proccess_command(char *command)
 	}
 	if (strcmp(command, "exit") == 0)
 	{
-		exit(EXIT_SUCCESS);
+		EXIT_SUCCESS;
 	}
 	execute_command(command);
 }
