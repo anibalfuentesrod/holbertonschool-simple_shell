@@ -16,7 +16,7 @@ void display_prompt(void)
 	if (is_interactive_mode())
 	{
 		/* Check if running interactively */
-		printf("(　-_･) ︻デ═一 ▸ ");
+		printf("($) ");
 		fflush(stdout);
 	}
 }
@@ -35,8 +35,9 @@ void remove_newline(char *str)
 void execute_command(char *command)
 {
 	pid_t pid = fork();
+	int status;
 	int i;
-	/* Fork proccess to execute command */
+
 	if (pid == -1)
 	{
 		perror("fork");
@@ -49,21 +50,17 @@ void execute_command(char *command)
 		args[0] = strtok(command, " ");
 		i = 1;
 
-		/* Tokenize command */
 		while ((args[i] = strtok(NULL, " ")) != NULL)
 		{
 			i++;
 		}
-		/* Execute command */
 		execvp(args[0], args);
-		/* Handle command not found */
-		fprintf(stderr, "./hsh: %s: command not found\n", command);
-		exit(EXIT_FAILURE);
-	} else
-	{
-	/* Wait for child procces to finish */
-	int status;
 
-	waitpid(pid, &status, 0);
+		fprintf(stderr, "./hsh: %s: command not found/n", command);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
 	}
 }
