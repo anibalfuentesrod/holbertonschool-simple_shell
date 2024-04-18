@@ -1,60 +1,67 @@
 #include "shell.h"
 /**
- * main - the main duhh
- * @args: argument
- * @argv: argument vector
- * Return: 0
-**/
-int main (void)
+ * initialize_shell - initializes the shell and displays a my welcome message
+*/
+void initialize_shell(void)
 {
-	char command[MAX_COMMAND_LENGTH];
-	bool interactive_mode = is_interactive_mode();
-	printf("You're now in my shell...\n");
+	printf("You're now in my shell, welcome!!!\n");
 
-	/* Check is rnning interactively if it is then...*/
-	if (interactive_mode)
+	if (is_interactive_mode())
 	{
 		printf("Shell is running interactively\n");
-	}
-	else
+	} else
 	{
 		printf("Shell is running non-interactively\n");
 	}
-	/* Main shell loop..*/
+}
+/**
+ * read_command - reads a command from the user input.
+ * @command: pointer to the buffer where the command will be stored.
+**/
+void read_command(char *command)
+{
+	if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
+	{
+		printf("\n");
+		exit(EXIT_SUCCESS);
+	}
+	remove_newline(command);
+}
+/**
+ * proccess_command - processes the command entered by the user.
+ * @command: the command to procces.
+**/
+void proccess_command(char *command)
+{
+	if (strlen(command) == 0)
+	{
+		return;
+	}
+	if (strcmp(command, "exit") == 0)
+	{
+		exit(EXIT_SUCCESS);
+	}
+	execute_command(command);
+}
+/**
+ * main - the main function of the shell program,
+ * controls the main loop of the shell,
+ * searching for command, reading input,
+ * and executing the commands :)
+ *
+ * Return: 0 on success.
+**/
+int main(void)
+{
+	char command[MAX_COMMAND_LENGTH];
+
+	initialize_shell();
+
 	while (1)
 	{
-		/* This part displays prompt if running interactively */
-		if (interactive_mode)
-		{
-			display_prompt();
-			/* Reads the user input */
-			if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
-			{
-				printf("\n");
-				break;
-			}
-			remove_newline(command);
-		} else {
-			/* Read input if not running interactively */
-			if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
-			{
-				break;
-			}
-			remove_newline(command);
-		}
-		if (strlen(command) == 0)
-		{
-			continue;
-		}
-		/* Checks for exit command */
-		if (strcmp(command, "exit") == 0)
-		{
-			break;
-		}
-		/* Execute commands */
-		execute_command(command);
+		display_prompt();
+		read_command(command);
+		proccess_command(command);
 	}
-	printf("You just exited the shell...\n");
-
 	return (0);
 }
