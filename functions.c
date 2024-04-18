@@ -56,7 +56,7 @@ void execute_command(char *command)
 		}
 		execvp(args[0], args);
 		
-		fprintf(stderr, "./hsh: %s: ", args[0]);
+		fprintf(stderr, "./hsh: %s: \n", args[0]);
 		exit(EXIT_FAILURE);
 	}
 	else
