@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define MAX_COMMAND_LENGTH 1024
+#define MAX_COMMAND_LENGTH 1000
 
 bool is_interactive_mode(void);
 void display_prompt(void);
