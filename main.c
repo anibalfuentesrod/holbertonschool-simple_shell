@@ -27,10 +27,11 @@ void read_command(char *command)
 	}
 	else if (bytes_read == 0)
 	{
+		if (is_interactive_mode())
 		printf("\n");
 		exit(EXIT_SUCCESS);
 	}
-	command[bytes_read - 1] = '\0';
+	remove_newline(command);
 }
 /**
  * proccess_command - processes the command entered by the user.
@@ -38,15 +39,6 @@ void read_command(char *command)
 **/
 void proccess_command(char *command)
 {
-	if (strlen(command) == 0)
-	{
-		return;
-	}
-
-	if (strcmp(command, "exit") == 0)
-	{
-		exit(EXIT_SUCCESS);
-	}
 	execute_command(command);
 }
 /**
@@ -61,10 +53,19 @@ int main()
 {
 	char command[MAX_COMMAND_LENGTH];
 
+	initialize_shell();
+
 	while (1)
 	{
 		display_prompt();
 		read_command(command);
+
+		if (strlen(command) == 0)
+		continue;
+
+	if (strcmp(command, "exit") == 0)
+	break;
+
 		proccess_command(command);
 	}
 	return (0);
