@@ -9,10 +9,18 @@ int main()
 {
 	char command[MAX_COMMAND_LENGTH];
 
-	pid_t pid = fork();
-
 	while(1)
 	{
+		pid_t pid = fork();
+
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (pid == 0)
+		{
+
 		printf("$ ");
 		fflush(stdout);
 
@@ -31,18 +39,11 @@ int main()
 		}
 		command[strcspn(command, "\n")] = '\0';
 
-		if (pid == -1)
+		if (execlp(command, command, NULL) == -1)
 		{
-			perror("fork");
+			fprintf(stderr, "Error: command not found: %s\n", command);
 			exit(EXIT_FAILURE);
 		}
-		else if (pid == 0)
-		{
-			if (execlp(command, command, NULL) == -1)
-			{
-				fprintf(stderr, "Error: command not found: %s\n", command);
-				exit(EXIT_FAILURE);
-			}
 		}
 		else
 		{
