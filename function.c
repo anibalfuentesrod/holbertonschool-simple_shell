@@ -13,6 +13,7 @@ bool is_interactive_mode(void)
 **/
 void display_prompt(void)
 {
+	if (is_interactive_mode())
 		printf("$ ");
 }
 /**
