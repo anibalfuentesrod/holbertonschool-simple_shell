@@ -9,6 +9,8 @@ int main()
 {
 	char command[MAX_COMMAND_LENGTH];
 
+	pid_t pid = fork();
+
 	while(1)
 	{
 		printf("$ ");
@@ -29,10 +31,22 @@ int main()
 		}
 		command[strcspn(command, "\n")] = '\0';
 
-		if (execlp(command, command, NULL) == -1)
+		if (pid == -1)
 		{
-
-		fprintf(stderr,"Error: command not found: %s\n", command);
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (pid == 0)
+		{
+			if (execlp(command, command, NULL) == -1)
+			{
+				fprintf(stderr, "Error: command not found: %s\n", command);
+				exit(EXIT_FAILURE);
+			}
+		}
+		else
+		{
+			wait(NULL);
 		}
 	}
 	return (0);
