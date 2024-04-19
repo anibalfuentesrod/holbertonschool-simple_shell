@@ -13,7 +13,6 @@ bool is_interactive_mode(void)
 **/
 void display_prompt(void)
 {
-	if (isatty(STDIN_FILENO))
 		printf("$ ");
 }
 /**
