@@ -13,7 +13,7 @@ bool is_interactive_mode(void)
 **/
 void display_prompt(void)
 {
-	if (isatty(STDIN_FILENO))
+	if (is_interactive_mode())
 		printf("$ ");
 }
 /**
@@ -22,7 +22,12 @@ void display_prompt(void)
 **/
 void remove_newline(char *str)
 {
-	str[strcspn(str, "\n")] = '\0';
+	char *newline = strchr(str, '\n');
+	
+	if (newline != NULL)
+	{
+		*newline = '\0';
+	}
 }
 /**
  * execute_command - this executes the command that you put on it
@@ -42,7 +47,8 @@ void execute_command(char *command)
 	{
 		char *args[MAX_COMMAND_LENGTH];
 
-		args[0] = strtok(command, "");
+		args[0] = strtok(command, " ");
+
 		if (args[0] == NULL)
 			exit(EXIT_SUCCESS);
 

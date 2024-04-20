@@ -18,10 +18,17 @@ void initialize_shell(void)
 **/
 void read_command(char *command)
 {
-	if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
+	ssize_t bytes_read = read(STDIN_FILENO, command, MAX_COMMAND_LENGTH);
+	
+	if (bytes_read == -1)
 	{
-		if (isatty(STDIN_FILENO))
-			printf("\n");
+		perror("read");
+		exit(EXIT_FAILURE);
+	}
+	else if (bytes_read == 0)
+	{
+		if (is_interactive_mode())
+		printf("\n");
 		exit(EXIT_SUCCESS);
 	}
 	remove_newline(command);
@@ -32,14 +39,6 @@ void read_command(char *command)
 **/
 void proccess_command(char *command)
 {
-	if (strlen(command) == 0)
-	{
-		return;
-	}
-	if (strcmp(command, "exit") == 0)
-	{
-		exit(EXIT_SUCCESS);
-	}
 	execute_command(command);
 }
 /**
@@ -60,6 +59,13 @@ int main()
 	{
 		display_prompt();
 		read_command(command);
+
+		if (strlen(command) == 0)
+		continue;
+
+	if (strcmp(command, "exit") == 0)
+	break;
+
 		proccess_command(command);
 	}
 	return (0);
