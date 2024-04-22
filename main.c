@@ -19,10 +19,8 @@ char *read_command()
 		if (isatty(STDIN_FILENO))
 		{
 			perror("getline");
-			free(cmd);
 			return(NULL);
 		}
-		free(cmd);
 		exit(EXIT_SUCCESS);
 	}
 	remove_newline(cmd);
