@@ -14,9 +14,16 @@ char *read_command()
 		display_prompt();
 	}
 	bytes_read = getline(&cmd, &len, stdin);
-	if (bytes_read == -1 && !isatty(STDIN_FILENO))
+	if (bytes_read == -1)
 	{
-		exit(EXIT_FAILURE);
+		if (isatty(STDIN_FILENO))
+		{
+			perror("getline");
+			free(cmd);
+			return(NULL);
+		}
+		free(cmd);
+		exit(EXIT_SUCCESS);
 	}
 	remove_newline(cmd);
 	return (cmd);
@@ -40,7 +47,7 @@ int main()
 		cmd = read_command();
 
 		token = strtok(cmd, "\n");
-		while (token != NULL)
+		while (token != NULL && cmd != NULL)
 		{
 			if (strcmp(token, "exit") == 0)
 			{
