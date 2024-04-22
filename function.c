@@ -43,12 +43,14 @@ int execute_command(char *command)
 	if (pid < 0)
 	{
 		perror("fork");
+		free(command);
 		exit(EXIT_FAILURE);
 	} else if (pid == 0) /*Child Process HERE*/
 	{
 		if (execvp(args[0], args) < 0)
 		{
 			perror(args[0]);
+			free(command);
 			exit(2);
 		}
 	} else {
