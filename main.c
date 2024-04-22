@@ -45,9 +45,9 @@ int main()
 	{
 
 		cmd = read_command();
-
+		
 		token = strtok(cmd, "\n");
-		while (token != NULL && cmd != NULL)
+		if (token != NULL && cmd != NULL)
 		{
 			if (strcmp(token, "exit") == 0)
 			{
@@ -59,6 +59,7 @@ int main()
 			}
 			token = strtok(NULL, "\n");
 		}
+
 
 	}
 	return (status);
