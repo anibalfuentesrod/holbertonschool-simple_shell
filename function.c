@@ -1,20 +1,11 @@
 #include "shell.h"
 /**
- * is_interactive_mode - this check if shell is running interactive or not
- *
- * Return: true if running is interactive mode, false if not
-**/
-bool is_interactive_mode(void)
-{
-	return (isatty(STDIN_FILENO));
-}
-/**
  * display_prompt - this just simply display the prompt
 **/
 void display_prompt(void)
 {
-	if (is_interactive_mode())
 		printf("$ ");
+		fflush(stdout);	
 }
 /**
  * remove_newline - this obv remove the newline character from a string
@@ -36,28 +27,30 @@ void remove_newline(char *str)
 void execute_command(char *command)
 {
 	pid_t pid = fork();
-	int status;
+	int status, i;
+	char *token;
 
 	if (pid == -1)
 	{
 		perror("fork");
 		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
+	} else if (pid == 0)
 	{
 		char *args[MAX_COMMAND_LENGTH];
 
-		args[0] = strtok(command, " ");
-
-		if (args[0] == NULL)
-			exit(EXIT_SUCCESS);
+		token = strtok(command, " ");
+		while (token != NULL)
+		{
+			args[i++] = token;
+			token = strtok(NULL, " ");
+		}
+		args[i] = NULL;
 
 		execvp(args[0], args);
+
 		perror(args[0]);
 		exit(EXIT_FAILURE);
-	}
-	else
-	{
+	} else {
 		waitpid(pid, &status, 0);
 	}
 }

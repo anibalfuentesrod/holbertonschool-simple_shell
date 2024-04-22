@@ -1,18 +1,5 @@
 #include "shell.h"
 /**
- * initialize_shell - initializes the shell and displays a my welcome message
-*/
-
-void initialize_shell(void)
-{
-
-	if (is_interactive_mode())
-	{
-		printf("Shell is running interactively\n");
-	}
-}
-
-/**
  * read_command - reads a command from the user input.
  * @command: pointer to the buffer where the command will be stored.
 **/
@@ -27,7 +14,6 @@ void read_command(char *command)
 	}
 	else if (bytes_read == 0)
 	{
-		if (is_interactive_mode())
 		printf("\n");
 		exit(EXIT_SUCCESS);
 	}
@@ -51,22 +37,29 @@ void proccess_command(char *command)
 **/
 int main()
 {
-	char command[MAX_COMMAND_LENGTH];
-
-	initialize_shell();
+	char input[MAX_COMMAND_LENGTH];
+	char *token;
 
 	while (1)
 	{
+
 		display_prompt();
-		read_command(command);
 
-		if (strlen(command) == 0)
-		continue;
+		read_command(input);
 
-	if (strcmp(command, "exit") == 0)
-	break;
+		token = strtok(input, "\n");
+		while (token != NULL)
+		{
+			if (strcmp(token, "exit") == 0)
+			{
+				exit(EXIT_FAILURE);
+			}
+			else{
+				execute_command(token);
+			}
+			token = strtok(NULL, "\n");
+		}
 
-		proccess_command(command);
 	}
 	return (0);
 }
