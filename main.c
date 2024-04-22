@@ -59,8 +59,7 @@ int main()
 			}
 			token = strtok(NULL, "\n");
 		}
-
-
+		free(cmd)
 	}
 	return (status);
 }
