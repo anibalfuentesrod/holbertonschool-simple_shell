@@ -24,10 +24,11 @@ void remove_newline(char *str)
  * execute_command - this executes the command that you put on it
  * @command: the command to execute bruhh
 **/
-void execute_command(char *command)
+int execute_command(char *command)
 {
 	pid_t pid = fork();
-	int status, i = 0;
+	int status = 0;
+	int i = 0;
 	char *token;
 	char *args[MAX_COMMAND_LENGTH];
 
@@ -53,4 +54,5 @@ void execute_command(char *command)
 	} else {
 		waitpid(pid, &status, 0);
 	}
+	return (status);
 }
