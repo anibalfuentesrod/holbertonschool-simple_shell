@@ -32,6 +32,7 @@ char *read_command()
 int main()
 {
 	char *token, *cmd = NULL;
+	int status = 0;
 
 	while (1)
 	{
@@ -46,11 +47,11 @@ int main()
 				exit(EXIT_SUCCESS);
 			}
 			else{
-				execute_command(token);
+				status = execute_command(token);
 			}
 			token = strtok(NULL, "\n");
 		}
 
 	}
-	return (0);
+	return (status);
 }
