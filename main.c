@@ -3,29 +3,20 @@
  * read_command - reads a command from the user input.
  * @command: pointer to the buffer where the command will be stored.
 **/
-void read_command(char *command)
+char *read_command()
 {
-	ssize_t bytes_read = read(STDIN_FILENO, command, MAX_COMMAND_LENGTH);
+	char *cmd = NULL;
+	size_t len = 0;
+	ssize_t bytes_read;
 	
-	if (bytes_read == -1)
+	display_prompt();
+	bytes_read = getline(&cmd, &len, stdin);
+	if (bytes_read == -1 && !isatty(STDIN_FILENO))
 	{
-		perror("read");
 		exit(EXIT_FAILURE);
 	}
-	else if (bytes_read == 0)
-	{
-		printf("\n");
-		exit(EXIT_SUCCESS);
-	}
-	remove_newline(command);
-}
-/**
- * proccess_command - processes the command entered by the user.
- * @command: the command to procces.
-**/
-void proccess_command(char *command)
-{
-	execute_command(command);
+	remove_newline(cmd);
+	return (cmd);
 }
 /**
  * main - the main function of the shell program,
@@ -37,22 +28,19 @@ void proccess_command(char *command)
 **/
 int main()
 {
-	char input[MAX_COMMAND_LENGTH];
-	char *token;
+	char *token, *cmd = NULL;
 
 	while (1)
 	{
 
-		display_prompt();
+		cmd = read_command();
 
-		read_command(input);
-
-		token = strtok(input, "\n");
+		token = strtok(cmd, "\n");
 		while (token != NULL)
 		{
 			if (strcmp(token, "exit") == 0)
 			{
-				exit(EXIT_FAILURE);
+				exit(EXIT_SUCCESS);
 			}
 			else{
 				execute_command(token);

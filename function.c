@@ -14,10 +14,10 @@ void display_prompt(void)
 void remove_newline(char *str)
 {
 	char *newline = strchr(str, '\n');
-	
+
 	if (newline != NULL)
 	{
-		*newline = '\0';
+		newline = '\0';
 	}
 }
 /**
@@ -27,29 +27,29 @@ void remove_newline(char *str)
 void execute_command(char *command)
 {
 	pid_t pid = fork();
-	int status, i;
+	int status, i = 0;
 	char *token;
+	char *args[MAX_COMMAND_LENGTH];
 
-	if (pid == -1)
+	token = strtok(command, " ");
+	while (token != NULL)
+	{
+		args[i] = token;
+		token = strtok(NULL, " ");
+		i++;
+	}
+	args[i] = NULL;
+	if (pid < 0)
 	{
 		perror("fork");
 		exit(EXIT_FAILURE);
-	} else if (pid == 0)
+	} else if (pid == 0) /*Child Process HERE*/
 	{
-		char *args[MAX_COMMAND_LENGTH];
-
-		token = strtok(command, " ");
-		while (token != NULL)
+		if (execvp(args[0], args) < 0)
 		{
-			args[i++] = token;
-			token = strtok(NULL, " ");
+			perror(args[0]);
+			exit(EXIT_FAILURE);
 		}
-		args[i] = NULL;
-
-		execvp(args[0], args);
-
-		perror(args[0]);
-		exit(EXIT_FAILURE);
 	} else {
 		waitpid(pid, &status, 0);
 	}
