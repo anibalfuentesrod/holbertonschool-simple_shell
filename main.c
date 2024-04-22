@@ -1,5 +1,23 @@
 #include "shell.h"
 /**
+ * remove_whitespace - remove the withespace in the command
+ * @cmd: comand to remove the shitespace
+**/
+void remove_whitespace(char *cmd)
+{
+	int i;
+
+	if (cmd == NULL || cmd[0] == '\0')
+		free(cmd);
+	for (i = 0; cmd[i] != '\0'; i++)
+	{
+		if (cmd[i] != ' ')
+			return;
+	}
+	free(cmd);
+}
+		
+/**
  * read_command - reads a command from the user input.
  * @command: pointer to the buffer where the command will be stored.
 **/
@@ -45,7 +63,9 @@ int main()
 	{
 
 		cmd = read_command();
-		
+
+		remove_whitespace(cmd);
+
 		token = strtok(cmd, "\n");
 		if (token != NULL && cmd != NULL)
 		{
