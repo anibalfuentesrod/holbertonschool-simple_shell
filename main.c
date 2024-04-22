@@ -1,18 +1,5 @@
 #include "shell.h"
 /**
- * initialize_shell - initializes the shell and displays a my welcome message
-*/
-
-void initialize_shell(void)
-{
-
-	if (is_interactive_mode())
-	{
-		printf("Shell is running interactively\n");
-	}
-}
-
-/**
  * read_command - reads a command from the user input.
  * @command: pointer to the buffer where the command will be stored.
 **/
@@ -27,7 +14,6 @@ void read_command(char *command)
 	}
 	else if (bytes_read == 0)
 	{
-		if (is_interactive_mode())
 		printf("\n");
 		exit(EXIT_SUCCESS);
 	}
@@ -54,11 +40,11 @@ int main()
 	char input[MAX_COMMAND_LENGTH];
 	char *token;
 
-	initialize_shell();
-
 	while (1)
 	{
+
 		display_prompt();
+
 		read_command(input);
 
 		token = strtok(input, "\n");
@@ -74,8 +60,6 @@ int main()
 			token = strtok(NULL, "\n");
 		}
 
-		token = strtok(NULL, "\n");
-		
 	}
 	return (0);
 }
