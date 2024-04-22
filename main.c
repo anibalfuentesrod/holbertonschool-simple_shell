@@ -9,7 +9,10 @@ char *read_command()
 	size_t len = 0;
 	ssize_t bytes_read;
 	
-	display_prompt();
+	if (isatty(STDIN_FILENO))
+	{
+		display_prompt();
+	}
 	bytes_read = getline(&cmd, &len, stdin);
 	if (bytes_read == -1 && !isatty(STDIN_FILENO))
 	{
