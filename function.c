@@ -14,7 +14,10 @@ bool is_interactive_mode(void)
 void display_prompt(void)
 {
 	if (is_interactive_mode())
+	{
 		printf("$ ");
+		fflush(stdout);
+	}
 }
 /**
  * remove_newline - this obv remove the newline character from a string

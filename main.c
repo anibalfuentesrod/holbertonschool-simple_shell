@@ -51,22 +51,31 @@ void proccess_command(char *command)
 **/
 int main()
 {
-	char command[MAX_COMMAND_LENGTH];
+	char input[MAX_COMMAND_LENGTH];
+	char *token;
 
 	initialize_shell();
 
 	while (1)
 	{
 		display_prompt();
-		read_command(command);
+		read_command(input);
 
-		if (strlen(command) == 0)
-		continue;
+		token = strtok(input, "\n");
+		while (token != NULL)
+		{
+			if (strcmp(token, "exit") == 0)
+			{
+				exit(EXIT_FAILURE);
+			}
+			else{
+				execute_command(token);
+			}
+			token = strtok(NULL, "\n");
+		}
 
-	if (strcmp(command, "exit") == 0)
-	break;
-
-		proccess_command(command);
+		token = strtok(NULL, "\n");
+		
 	}
 	return (0);
 }
