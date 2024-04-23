@@ -52,7 +52,7 @@ int execute_command(char *command)
 			perror(args[0]);
 			free(command);
 			exit(2);
-		}
+		} 
 	} else {
 		waitpid(pid, &status, 0);
 	}
