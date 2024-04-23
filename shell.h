@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 #define MAX_COMMAND_LENGTH 1000
 
