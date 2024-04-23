@@ -48,7 +48,6 @@ char *read_command()
 			perror("getline");
 			return(NULL);
 		}
-		printf("read_command\n");
 		free(cmd);
 		exit(EXIT_SUCCESS);
 	}
