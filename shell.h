@@ -12,7 +12,6 @@
 
 #define MAX_COMMAND_LENGTH 1000
 
-bool is_interactive_mode(void);
 void display_prompt(void);
 void remove_newline(char *str);
 int execute_command(char *command);
