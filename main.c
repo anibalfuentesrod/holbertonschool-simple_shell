@@ -67,11 +67,13 @@ char *read_command()
  *
  * Return: 0 on success.
 **/
-int main()
+int main(int argc, char *argv[], char *envp[])
 {
 	char *token, *cmd = NULL;
 	int status = 0;
 	int check = 1;
+	(void)argc;
+	(void)argv;
 
 	while (1)
 	{
@@ -95,7 +97,7 @@ int main()
 				exit(EXIT_SUCCESS);
 			}
 			else{
-				status = execute_command(token);
+				status = execute_command(token, envp);
 			}
 			token = strtok(NULL, "\n");
 		}
