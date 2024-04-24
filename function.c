@@ -61,10 +61,11 @@ char *add_bin(char *cmd)
 /**
  * execute_command - this executes the command that you put on it
  * @command: the command to execute bruhh
- * 
+ * @envp: enviromental value
+ *
  * Return: status of the child process
 **/
-int execute_command(char *command)
+int execute_command(char *command, char *envp[])
 {
 	pid_t pid = fork();
 	int status = 0;
@@ -91,7 +92,7 @@ int execute_command(char *command)
 	}
 	else if (pid == 0) /*Child Process HERE*/
 	{
-		if (execve(args[0], args, NULL) < 0)
+		if (execve(args[0], args, envp) < 0)
 		{
 			perror(args[0]);
 			exit(2);
