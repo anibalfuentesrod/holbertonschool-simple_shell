@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-
+#include <limits.h>
 #define MAX_COMMAND_LENGTH 1000
 
 void display_prompt(void);
