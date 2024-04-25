@@ -28,10 +28,11 @@ void remove_newline(char *str)
  *
  *
  */
-char *check_path(char *cmd)
+char *check_path(char *cmd, char *envp[])
 {
-	char *path = getenv("PATH");
+	char *path;
 	char *token, *path_cpy = NULL, *temp;
+	int i;
 
 	if (cmd == NULL)
 		return (NULL);
@@ -42,26 +43,35 @@ char *check_path(char *cmd)
 		else
 			return (NULL);
 	}
-	if (path != NULL)
+	for (i = 0; envp[i] != NULL; i++)
 	{
-		path_cpy = strdup(path);
-		if (path_cpy == NULL)
-			exit(EXIT_FAILURE);
-		token = strtok(path_cpy, ":");
-		while (token != NULL)
+		if (strncmp(envp[i], "PATH=", 5) == 0)
 		{
-			temp = malloc(PATH_MAX);
-			if (temp == NULL)
-				return (NULL);
-			snprintf(temp, PATH_MAX, "%s/%s", token, cmd);
-			if (access(temp, X_OK) == 0)
-			{
-				free(path_cpy);
-				return (temp);
-			}
-			free(temp);
-			token = strtok(NULL, ":");
+			path = envp[i] + 5;
+			break;
 		}
+	}
+	if (path == NULL)
+		return (NULL);
+
+	path_cpy = strdup(path);
+	if (path_cpy == NULL)
+		exit(EXIT_FAILURE);
+
+	token = strtok(path_cpy, ":");
+	while (token != NULL)
+	{
+		temp = malloc(PATH_MAX);
+		if (temp == NULL)
+			return (NULL);
+		snprintf(temp, PATH_MAX, "%s/%s", token, cmd);
+		if (access(temp, X_OK) == 0)
+		{
+			free(path_cpy);
+			return (temp);
+		}
+		free(temp);
+		token = strtok(NULL, ":");
 	}
 	free(path_cpy);
 	return (NULL);
@@ -91,7 +101,7 @@ int execute_command(char *command, char *envp[])
 		i++;
 	}
 	args[i] = NULL;
-	cmd = check_path(args[0]);
+	cmd = check_path(args[0], envp);
 	if (cmd == NULL)
 	{
 		free(command);
