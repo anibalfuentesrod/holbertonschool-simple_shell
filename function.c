@@ -22,42 +22,51 @@ void remove_newline(char *str)
 }
 
 /**
- *add_bin - adds command line
- *@cmd: comand pointer in use
- *Return: cmd
+ *
+ *
+ *
+ *
+ *
  */
-char *add_bin(char *cmd)
+char *check_path(char *cmd)
 {
-	char temp[] = "/bin/";
-	int i;
-	int j;
-	bool flag = false;
-	char *new_mem;
+	char *path = getenv("PATH");
+	char *token, *path_cpy = NULL, *temp;
 
-	for (i = 0; temp[i] != '\0'; i++)
+	if (cmd == NULL)
+		return (NULL);
+	if (strchr(cmd, '/') != NULL)
 	{
-		if (temp[i] != cmd[i])
+		if (access(cmd, X_OK) == 0)
+			return (strdup(cmd));
+		else
+			return (NULL);
+	}
+	if (path != NULL)
+	{
+		path_cpy = strdup(path);
+		if (path_cpy == NULL)
+			exit(EXIT_FAILURE);
+		token = strtok(path_cpy, ":");
+		while (token != NULL)
 		{
-			flag = true;
-			break;
+			temp = malloc(PATH_MAX);
+			if (temp == NULL)
+				return (NULL);
+			snprintf(temp, PATH_MAX, "%s/%s", token, cmd);
+			if (access(temp, X_OK) == 0)
+			{
+				free(path_cpy);
+				return (temp);
+			}
+			free(temp);
+			token = strtok(NULL, ":");
 		}
 	}
-	if (flag)
-	{
-	new_mem = malloc(strlen(temp) + strlen(cmd) + 1);
-		for (i = 0; temp[i] != '\0'; i++)
-		{
-			new_mem[i] = temp[i];
-		}
-		for (j = 0; cmd[j] != '\0'; j++, i++)
-		{
-			new_mem[i] = cmd[j];
-		}
-		new_mem[i] = '\0';
-		return (new_mem);
-	}
+	free(path_cpy);
 	return (NULL);
 }
+
 /**
  * execute_command - this executes the command that you put on it
  * @command: the command to execute bruhh
@@ -75,7 +84,6 @@ int execute_command(char *command, char *envp[])
 	char *cmd = NULL;
 
 	token = strtok(command, " ");
-	cmd = add_bin(token);
 	while (token != NULL)
 	{
 		args[i] = token;
@@ -83,8 +91,12 @@ int execute_command(char *command, char *envp[])
 		i++;
 	}
 	args[i] = NULL;
-	if (cmd != NULL)
-		args[0] = cmd;
+	cmd = check_path(args[0]);
+	if (cmd == NULL)
+	{
+		free(command);
+		exit(127);
+	}
 	if (pid < 0)
 	{
 		perror("fork");
@@ -92,17 +104,18 @@ int execute_command(char *command, char *envp[])
 	}
 	else if (pid == 0) /*Child Process HERE*/
 	{
-		if (execve(args[0], args, envp) < 0)
+		if (execve(cmd, args, envp) < 0)
 		{
 			perror(args[0]);
 			exit(2);
 		}
+		free(cmd);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
+		free(cmd);
 	}
-	free(cmd);
 	return (status);
 }
 

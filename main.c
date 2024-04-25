@@ -11,13 +11,7 @@ int remove_whitespace(char *cmd)
 	{
 		if (cmd[i] != ' ')
 		{
-			if (cmd[i] == '\0')
-			{
-				return (1);
-			} else 
-			{
 				return (0);
-			}
 		}
 	
 	}
@@ -96,10 +90,10 @@ int main(int argc, char *argv[], char *envp[])
 				free(cmd);
 				exit(EXIT_SUCCESS);
 			}
-			else{
+			else
+			{
 				status = execute_command(token, envp);
 			}
-			token = strtok(NULL, "\n");
 		}
 		free(cmd);
 		check = 1;
