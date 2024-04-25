@@ -9,11 +9,10 @@ int remove_whitespace(char *cmd)
 
 	for (i = 0; cmd[i] != '\0'; i++)
 	{
-		if (cmd[i] != ' ')
+		if (cmd[i] != ' ' && cmd[i] != '\n' && cmd[i] != '\t')
 		{
-				return (0);
+			return (0);
 		}
-	
 	}
 	return (1);
 }
