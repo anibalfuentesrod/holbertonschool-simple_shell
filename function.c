@@ -33,7 +33,16 @@ char *check_path(char *cmd, char *envp[])
 	char *path;
 	char *token, *path_cpy = NULL, *temp;
 	int i;
-
+	
+	path = NULL;
+	for (i = 0; envp[i] != NULL; i++)
+	{
+		if (strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			path = envp[i] + 5;
+			break;
+		}
+	}
 	if (cmd == NULL)
 		return (NULL);
 	if (strchr(cmd, '/') != NULL)
@@ -51,7 +60,7 @@ char *check_path(char *cmd, char *envp[])
 			break;
 		}
 	}
-	if (path == NULL)
+	if (path == NULL || *path == '\0')
 		return (NULL);
 
 	path_cpy = strdup(path);
