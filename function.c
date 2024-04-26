@@ -69,7 +69,7 @@ int execute_command(char *command)
 int remove_whitespace(char *cmd)
 {
 	int i;
-	
+
 	for (i = 0; cmd[i] != '\0'; i++)
 	{
 		if (cmd[i] != ' ')
@@ -114,7 +114,7 @@ char *read_command(void)
 	}
 	len = strlen(cmd);
 
-	if (len > 0 && cmd[len -1] == '\n')
+	if (len > 0 && cmd[len - 1] == '\n')
 	{
 		cmd[len - 1] = '\0';
 	}
