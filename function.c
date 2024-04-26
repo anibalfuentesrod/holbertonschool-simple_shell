@@ -17,7 +17,7 @@ void remove_newline(char *str)
 
 	if (newline != NULL)
 	{
-		newline = '\0';
+		*newline = '\0';
 	}
 }
 /**
@@ -65,6 +65,8 @@ int execute_command(char *command)
 /**
  * remove_whitespace - remove the withespace in the command
  * @cmd: command to remove the space
+ *
+ * Return: 1
 **/
 int remove_whitespace(char *cmd)
 {
