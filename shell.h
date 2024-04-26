@@ -16,6 +16,8 @@ bool is_interactive_mode(void);
 void display_prompt(void);
 void remove_newline(char *str);
 int execute_command(char *command);
+char *read_command(void);
+int remove_whitespace(char *cmd);
 
 
 #endif

@@ -62,3 +62,61 @@ int execute_command(char *command)
 	}
 	return (status);
 }
+/**
+ * remove_whitespace - remove the withespace in the command
+ * @cmd: command to remove the space
+**/
+int remove_whitespace(char *cmd)
+{
+	int i;
+
+	for (i = 0; cmd[i] != '\0'; i++)
+	{
+		if (cmd[i] != ' ')
+		{
+			if (cmd[i] == '\0')
+			{
+				return (1);
+			}
+			else
+			{
+				return (0);
+			}
+		}
+	}
+	return (1);
+}
+/**
+ * read_command - reads a command from the user input
+ *
+ * Return: cmd
+**/
+char *read_command(void)
+{
+	char *cmd = NULL;
+	size_t len = 0, size = 0;
+	ssize_t bytes_read;
+
+	if (isatty(STDIN_FILENO))
+	{
+		display_prompt();
+	}
+	bytes_read = getline(&cmd, &size, stdin);
+	if (bytes_read == -1)
+	{
+		if (isatty(STDIN_FILENO))
+		{
+			perror("getline");
+			return (NULL);
+		}
+		free(cmd);
+		exit(EXIT_SUCCESS);
+	}
+	len = strlen(cmd);
+
+	if (len > 0 && cmd[len - 1] == '\n')
+	{
+		cmd[len - 1] = '\0';
+	}
+	return (cmd);
+}
