@@ -113,9 +113,11 @@ int execute_command(char *command, char *envp[])
 	cmd = check_path(args[0], envp);
 	if (cmd == NULL)
 	{
+		fprintf(stderr, "%s: command not found\n", args[0]);
 		free(command);
 		exit(127);
 	}
+	// here is the problem
 	if (pid < 0)
 	{
 		perror("fork");
@@ -126,15 +128,15 @@ int execute_command(char *command, char *envp[])
 		if (execve(cmd, args, envp) < 0)
 		{
 			perror(args[0]);
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
-		free(cmd);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		free(cmd);
 	}
+	free(cmd);
+	free(command);
 	return (status);
 }
 
