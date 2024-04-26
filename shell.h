@@ -9,13 +9,13 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include <limits.h>
+
 #define MAX_COMMAND_LENGTH 1000
 
 bool is_interactive_mode(void);
 void display_prompt(void);
 void remove_newline(char *str);
-int execute_command(char *command, char *envp[]);
+int execute_command(char *command);
 
 
 #endif
