@@ -63,6 +63,14 @@ char *check_path(char *cmd, char *envp[])
 	if (path == NULL || *path == '\0')
 		return (NULL);
 
+	if (strchr(cmd, '/') != NULL)
+	{
+		if (access(cmd, X_OK) == 0)
+			return (strdup(cmd));
+		else
+			return (NULL);
+	}
+
 	path_cpy = strdup(path);
 	if (path_cpy == NULL)
 		exit(EXIT_FAILURE);
