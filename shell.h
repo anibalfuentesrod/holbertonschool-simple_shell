@@ -9,12 +9,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-
+#include <limits.h>
 #define MAX_COMMAND_LENGTH 1000
 
 void display_prompt(void);
 void remove_newline(char *str);
-int execute_command(char *command);
+int execute_command(char *command, char *envp[]);
 
 
 #endif

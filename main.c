@@ -9,17 +9,10 @@ int remove_whitespace(char *cmd)
 
 	for (i = 0; cmd[i] != '\0'; i++)
 	{
-		if (cmd[i] != ' ')
+		if (cmd[i] != ' ' && cmd[i] != '\n' && cmd[i] != '\t')
 		{
-			if (cmd[i] == '\0')
-			{
-				return (1);
-			} else 
-			{
-				return (0);
-			}
+			return (0);
 		}
-	
 	}
 	return (1);
 }
@@ -67,11 +60,13 @@ char *read_command()
  *
  * Return: 0 on success.
 **/
-int main()
+int main(int argc, char *argv[], char *envp[])
 {
 	char *token, *cmd = NULL;
 	int status = 0;
 	int check = 1;
+	(void)argc;
+	(void)argv;
 
 	while (1)
 	{
@@ -94,10 +89,10 @@ int main()
 				free(cmd);
 				exit(EXIT_SUCCESS);
 			}
-			else{
-				status = execute_command(token);
+			else
+			{
+				status = execute_command(token, envp);
 			}
-			token = strtok(NULL, "\n");
 		}
 		free(cmd);
 		check = 1;
