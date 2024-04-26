@@ -117,7 +117,6 @@ int execute_command(char *command, char *envp[])
 		free(command);
 		exit(127);
 	}
-	// here is the problem
 	if (pid < 0)
 	{
 		perror("fork");
@@ -136,7 +135,6 @@ int execute_command(char *command, char *envp[])
 		waitpid(pid, &status, 0);
 	}
 	free(cmd);
-	free(command);
 	return (status);
 }
 
