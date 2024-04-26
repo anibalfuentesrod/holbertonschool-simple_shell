@@ -34,6 +34,7 @@ char *check_path(char *cmd, char *envp[])
 	char *token, *path_cpy = NULL, *temp;
 	int i;
 	
+	path = NULL;
 	for (i = 0; envp[i] != NULL; i++)
 	{
 		if (strncmp(envp[i], "PATH=", 5) == 0)
@@ -42,7 +43,24 @@ char *check_path(char *cmd, char *envp[])
 			break;
 		}
 	}
-	if (path == NULL || *path =='\0')
+	if (cmd == NULL)
+		return (NULL);
+	if (strchr(cmd, '/') != NULL)
+	{
+		if (access(cmd, X_OK) == 0)
+			return (strdup(cmd));
+		else
+			return (NULL);
+	}
+	for (i = 0; envp[i] != NULL; i++)
+	{
+		if (strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			path = envp[i] + 5;
+			break;
+		}
+	}
+	if (path == NULL || *path == '\0')
 		return (NULL);
 
 	path_cpy = strdup(path);
@@ -95,9 +113,11 @@ int execute_command(char *command, char *envp[])
 	cmd = check_path(args[0], envp);
 	if (cmd == NULL)
 	{
+		fprintf(stderr, "%s: command not found\n", args[0]);
 		free(command);
 		exit(127);
 	}
+	// here is the problem
 	if (pid < 0)
 	{
 		perror("fork");
@@ -108,15 +128,15 @@ int execute_command(char *command, char *envp[])
 		if (execve(cmd, args, envp) < 0)
 		{
 			perror(args[0]);
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
-		free(cmd);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		free(cmd);
 	}
+	free(cmd);
+	free(command);
 	return (status);
 }
 
